@@ -273,6 +273,9 @@ type SelectMenu struct {
 
 	// List of values that is only populated when receiving an interaction response; do not fill this manually.
 	Values []string `json:"values,omitempty"`
+
+	// Whether selection is required in modals (default true).
+	Required *bool `json:"required,omitempty"`
 }
 
 // Type is a method to get the type of a component.
@@ -393,6 +396,7 @@ func (s Section) MarshalJSON() ([]byte, error) {
 
 // TextDisplay is a top-level component that allows you to add markdown-formatted text to the message.
 type TextDisplay struct {
+	ID      int    `json:"id,omitempty"`
 	Content string `json:"content"`
 }
 
@@ -480,6 +484,8 @@ type FileComponent struct {
 	ID      int               `json:"id,omitempty"`
 	File    UnfurledMediaItem `json:"file"`
 	Spoiler bool              `json:"spoiler"`
+	Name    string            `json:"name,omitempty"` // API-provided filename
+	Size    int               `json:"size,omitempty"` // API-provided file size in bytes
 }
 
 // Type is a method to get the type of a component.
@@ -669,25 +675,10 @@ func (f FileUpload) MarshalJSON() ([]byte, error) {
 
 // UnfurledMediaItem represents an unfurled media item.
 type UnfurledMediaItem struct {
-	URL string `json:"url"`
-}
-
-// UnfurledMediaItemLoadingState is the loading state of the unfurled media item.
-type UnfurledMediaItemLoadingState uint
-
-// Unfurled media item loading states.
-const (
-	UnfurledMediaItemLoadingStateUnknown        UnfurledMediaItemLoadingState = 0
-	UnfurledMediaItemLoadingStateLoading        UnfurledMediaItemLoadingState = 1
-	UnfurledMediaItemLoadingStateLoadingSuccess UnfurledMediaItemLoadingState = 2
-	UnfurledMediaItemLoadingStateLoadedNotFound UnfurledMediaItemLoadingState = 3
-)
-
-// ResolvedUnfurledMediaItem represents a resolved unfurled media item.
-type ResolvedUnfurledMediaItem struct {
-	URL         string `json:"url"`
-	ProxyURL    string `json:"proxy_url"`
-	Width       int    `json:"width"`
-	Height      int    `json:"height"`
-	ContentType string `json:"content_type"`
+	URL          string `json:"url"`
+	ProxyURL     string `json:"proxy_url,omitempty"`     // Discord's proxied URL
+	Height       int    `json:"height,omitempty"`        // Media height in pixels
+	Width        int    `json:"width,omitempty"`         // Media width in pixels
+	ContentType  string `json:"content_type,omitempty"`  // MIME type
+	AttachmentID string `json:"attachment_id,omitempty"` // Attachment snowflake ID
 }
