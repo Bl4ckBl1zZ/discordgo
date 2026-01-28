@@ -14,7 +14,12 @@ package discordgo
 import "strconv"
 
 // APIVersion is the Discord API version used for the REST and Websocket API.
-var APIVersion = "9"
+var APIVersion = "10"
+
+// VoiceGatewayVersion is the Discord Voice Gateway version used for voice websocket connections.
+// This is separate from the main API/Gateway version as voice uses its own versioning.
+// See: https://discord.com/developers/docs/topics/voice-connections
+var VoiceGatewayVersion = "8"
 
 // Known Discord API Endpoints.
 var (
